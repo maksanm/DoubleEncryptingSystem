@@ -12,7 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Decoder.Core\Decoder.Core.csproj" />
+    <ProjectReference Include="..\Decoder.Core\Decryptor.Core.csproj" />
   </ItemGroup>
 
 </Project>

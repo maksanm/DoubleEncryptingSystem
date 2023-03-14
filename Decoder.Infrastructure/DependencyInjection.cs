@@ -39,7 +39,7 @@ namespace Decoder.Infrastructure
 
         private static IServiceCollection AddDecoderService(this IServiceCollection services)
         {
-            services.AddTransient<IDecoderService, DecoderService>();
+            services.AddTransient<IDecryptorService, DecoderService>();
 
             return services;
         }

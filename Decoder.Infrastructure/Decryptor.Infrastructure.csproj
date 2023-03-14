@@ -13,7 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Decoder.Application\Decoder.Application.csproj" />
+    <ProjectReference Include="..\Decoder.Application\Decryptor.Application.csproj" />
   </ItemGroup>
 
   <ItemGroup>

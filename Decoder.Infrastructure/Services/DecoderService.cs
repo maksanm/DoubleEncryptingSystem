@@ -2,7 +2,7 @@
 
 namespace Decoder.Infrastructure.Services
 {
-    public class DecoderService : IDecoderService
+    public class DecoderService : IDecryptorService
     {
     }
 }

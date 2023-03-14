@@ -1,2 +1,2 @@
-# Double encoding client-server application
-Solution prepered as a part of recruitment process. The task was to create the client writing encoded message to database using `SQL`-query and the server using `Entity Framework` with endpoint returning decoded mesage by key. I've used `AES`-encoding during saving message to database and `RSA` to encode message id and `AES`-key to be processed by the server.
+# Double encrypting client-server application
+Solution prepered as a part of recruitment process. The task was to create the client writing encrypted message to database using `SQL`-query and the server using `Entity Framework` with endpoint returning decrypted message by key. I've used `AES`-encrypting during saving message to database and `RSA` to encrypt message id and `AES`-key to be processed by the server.

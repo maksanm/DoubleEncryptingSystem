@@ -23,7 +23,7 @@ namespace Decoder.Infrastructure.Services
             var message = _context.Message.Find(messageId);
             if (message is null)
                 throw new ApplicationException("Message with provided id does not exist");
-            return message.EncryptedValue;
+            return message.EncryptedValue.ToString();
         }
     }
 }

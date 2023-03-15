@@ -2,5 +2,7 @@
 {
     public interface IDecryptorService
     {
+        string RSAPublicKey { get; }
+        string Decrypt(string encryptedMessage);
     }
 }

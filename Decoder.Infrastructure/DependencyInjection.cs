@@ -1,6 +1,8 @@
 ﻿using Decoder.Application.Interfaces;
 using Decoder.Infrastructure.Persistance;
 using Decoder.Infrastructure.Services;
+using Decryptor.Infrastructure.Interfaces;
+using Decryptor.Infrastructure.Services.Decryptors;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -12,6 +14,7 @@ namespace Decoder.Infrastructure
         public static IServiceCollection AddInfrastructure(this IServiceCollection services,IConfiguration configuration)
         {
             services.AddApplicationServices(configuration);
+            services.AddDecryptors();
 
             return services;
         }
@@ -19,7 +22,7 @@ namespace Decoder.Infrastructure
         private static IServiceCollection AddApplicationServices(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddDatabaseContext(configuration);
-            services.AddDecoderService();
+            services.AddTransient<IDecryptorService, DecryptorService>();
 
             return services;
         }
@@ -37,9 +40,9 @@ namespace Decoder.Infrastructure
             return services;
         }
 
-        private static IServiceCollection AddDecoderService(this IServiceCollection services)
+        private static IServiceCollection AddDecryptors(this IServiceCollection services)
         {
-            services.AddTransient<IDecryptorService, DecoderService>();
+            services.AddSingleton<IAsymmetricDecryptor, RSADecryptor>();
 
             return services;
         }

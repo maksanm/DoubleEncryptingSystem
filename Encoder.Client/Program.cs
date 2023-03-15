@@ -1,7 +1,6 @@
 ﻿using Encoder.Client.Interfaces;
 using Encoder.Client.Services;
 using Encryptor.Client.Interfaces;
-using Encryptor.Client.Interfaces.Encryptors;
 using Encryptor.Client.Services;
 using Encryptor.Client.Services.Encryptors;
 using System;
@@ -17,17 +16,22 @@ namespace Encoder.Client
             while(true)
             {
                 var message = GenerateMessage();
-                var id = Guid.NewGuid();
+                var id = Guid.NewGuid();                
+
+                IEncryptor aesEncryptor = new AESEncryptor();
+                var encryptedMessage = aesEncryptor.Encrypt(message, "password");
 
                 IApiClient apiClient = new ApiClient();
                 var rsaPublicKey = await apiClient.GetPublicRSAKey();
-                IAsymmetricEncryptor rsaEncryptor = new RSAEncryptor();
+                IEncryptor rsaEncryptor = new RSAEncryptor();
                 var encryptedData = rsaEncryptor.Encrypt(id.ToString(), rsaPublicKey);
 
-                await apiClient.GetDecryptedMessage(encryptedData);
                 
                 if (!InsertMessageToDatabase(id.ToString(), message))
                     break;
+
+                var decryptedMessage = await apiClient.GetDecryptedMessage(encryptedData);
+                Console.WriteLine("Decrypted message: " + decryptedMessage);
 
                 Thread.Sleep(15000);
             }

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Decoder.Application.Interfaces;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Decoder.Api.Controllers
 {
@@ -6,14 +7,17 @@ namespace Decoder.Api.Controllers
     [ApiController]
     public class RsaController : ControllerBase
     {
-        public RsaController()
+        private readonly IDecryptorService _decryptorService;
+
+        public RsaController(IDecryptorService decryptorService)
         {
+            _decryptorService = decryptorService;
         }
 
         [HttpGet("public")]
-        public void GetPublicRsaKey()
+        public ActionResult<string> GetRSAPublicKey()
         {
-
+            return Ok(_decryptorService.RSAPublicKey);
         }
     }
 }

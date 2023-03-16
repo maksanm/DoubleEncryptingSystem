@@ -1,4 +1,4 @@
-﻿using Encryptor.Client.Interfaces;
+﻿using Encryptor.Client.Interfaces.Encryptors;
 using System;
 using System.IO;
 using System.Security.Cryptography;
@@ -7,7 +7,7 @@ using System.Xml;
 
 namespace Encryptor.Client.Services.Encryptors
 {
-    internal class RSAEncryptor : IEncryptor
+    internal class RSAEncryptor : IAsymmetricEncryptor
     {
         public string Encrypt(string plainTextData, string rsaPublicKey)
         {

@@ -21,10 +21,10 @@ namespace Decoder.Infrastructure.Services
 
         public string Decrypt(string encryptedMessage)
         {
-            var messageIdAndAESKeys = _rsaDecryptor.Decrypt(encryptedMessage).Split("$");
-            var messageId = messageIdAndAESKeys[0];
-            var aesKey = messageIdAndAESKeys[1];
-            var aesIV = messageIdAndAESKeys[2];
+            var messageIdWithAesKeyAndIV = _rsaDecryptor.Decrypt(encryptedMessage).Split("$");
+            var messageId = messageIdWithAesKeyAndIV[0];
+            var aesKey = messageIdWithAesKeyAndIV[1];
+            var aesIV = messageIdWithAesKeyAndIV[2];
             var message = _context.Message.Find(messageId);
             if (message is null)
                 throw new ApplicationException("Message with provided id does not exist");

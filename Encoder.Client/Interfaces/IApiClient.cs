@@ -13,7 +13,7 @@ namespace Encryptor.Client.Interfaces
         /// <summary>
         /// Get decrypted message from database
         /// </summary>
-        /// <param name="encryptedMessageInfo">RSA-encrypted message id and AES-key separated by space</param>
+        /// <param name="encryptedMessageInfo">RSA-encrypted message ID, AES key and AES initialization vector separated by $</param>
         /// <returns>Decrypted message</returns>
         Task<string> GetDecryptedMessage(string encryptedMessageInfo);
     }

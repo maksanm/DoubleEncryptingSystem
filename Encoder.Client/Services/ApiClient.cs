@@ -49,7 +49,7 @@ namespace Encryptor.Client.Services
                 sleepDurationProvider: (attemptCount) => TimeSpan.FromSeconds(attemptCount),
                 onRetry: (_, sleepDuration, _, _) =>
                 {
-                    Console.WriteLine("Request failed -" + requestName + $". Waiting for {sleepDuration.TotalSeconds} seconds to retry...");
+                    Console.WriteLine("Request failed - " + requestName + $". Waiting for {sleepDuration.TotalSeconds} seconds to retry...");
                 });
     }
 }

@@ -31,7 +31,8 @@ namespace Encoder.Client
                 var password = GenerateString();
                 (var aesEncryptedMessage, var aesIV) = aesEncryptor.Encrypt(message, password);
                 Console.WriteLine("Generated message: " + message);
-                Console.WriteLine("With password (AES-key): " + password);
+                Console.WriteLine("With password (AES key): " + password);
+                Console.WriteLine("\nAES initialization vector: " + aesIV);
                 Console.WriteLine("\nAES-encrypted message: " + aesEncryptedMessage);
 
                 var id = Guid.NewGuid();                
@@ -40,7 +41,7 @@ namespace Encoder.Client
                 Console.WriteLine("Generated message ID: " + id.ToString());
 
                 var rsaEncryptedIdWithAesKeys = rsaEncryptor.Encrypt(id.ToString() + "$" + password + "$" + aesIV, rsaPublicKey);
-                Console.WriteLine("\nRSA-encrypted ID with AES-key: " + rsaEncryptedIdWithAesKeys);
+                Console.WriteLine("\nRSA-encrypted ID with AES key and AES initialization vector:\n" + rsaEncryptedIdWithAesKeys);
 
                 var decryptedMessage = await apiClient.GetDecryptedMessage(rsaEncryptedIdWithAesKeys);
                 Console.WriteLine("\nDecrypted message fetched from the server: " + decryptedMessage);

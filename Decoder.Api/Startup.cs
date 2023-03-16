@@ -1,3 +1,4 @@
+using Decoder.Application.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -24,6 +25,8 @@ namespace Decoder.Api
                 .AddXmlSerializerFormatters();
 
             services.AddInfrastructure(Configuration);
+
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -32,6 +35,13 @@ namespace Decoder.Api
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+            }
+
+            using var scope = app.ApplicationServices.CreateScope();
+            {
+                var services = scope.ServiceProvider;
+                var context = services.GetRequiredService<IApplicationDbContext>();
+                context.Migrate();
             }
 
             app.UseHttpsRedirection();

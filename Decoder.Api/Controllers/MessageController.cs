@@ -1,6 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using System.Web;
+﻿using Microsoft.AspNetCore.Mvc;
+using System;
 
 namespace Decoder.Api.Controllers
 {
@@ -15,7 +14,7 @@ namespace Decoder.Api.Controllers
         [HttpGet("{key}")]
         public ActionResult<string> DecryptMessage([FromRoute] string key)
         {
-            key = HttpUtility.UrlDecode(key);
+            key = Uri.UnescapeDataString(key);
             return StatusCode(418, key);
         }
     }

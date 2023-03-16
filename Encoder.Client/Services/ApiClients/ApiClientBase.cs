@@ -16,6 +16,8 @@ namespace Encryptor.Client.Services.ApiClients
         protected readonly string _apiUrl;
         protected readonly IRestClient _restClient;
 
+        public ApiClientBase() { }
+
         public ApiClientBase(string apiUrl)
         {
             _apiUrl = apiUrl;

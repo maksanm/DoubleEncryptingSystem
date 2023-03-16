@@ -20,8 +20,11 @@ namespace Encoder.Client
             var decryptorApiClient = new DecryptorApiClient(ConfigurationManager.AppSettings["decryptorApiUrl"]);
             ISymmetricEncryptor aesEncryptor = new AESEncryptor();
             IAsymmetricEncryptor rsaEncryptor = new RSAEncryptor();
+            
             var messageLength = Convert.ToInt32(ConfigurationManager.AppSettings["messageLength"]);
             var passwordLength = Convert.ToInt32(ConfigurationManager.AppSettings["passwordLength"]);
+
+            PrintRepositoryInfo();
 
             var rsaPublicKey = await decryptorApiClient.GetPublicRSAKey();
             Console.WriteLine("\nRSA public key fetched from the server: " + rsaPublicKey);
@@ -51,6 +54,21 @@ namespace Encoder.Client
 
                 Thread.Sleep(15000);
             }
+        }
+
+        private static void PrintRepositoryInfo()
+        {
+            var repoOwner = ConfigurationManager.AppSettings["githubRepositoryOwner"];
+            var repoName = ConfigurationManager.AppSettings["githubRepositoryName"];
+            var githubApiClient = new GitHubRepositoryApiClient(repoOwner, repoName);
+            Console.WriteLine("\n========================= Repository info ==============================\n");
+            Console.WriteLine("Name: " + repoName);
+            Console.WriteLine("Owner: " + repoOwner);
+            Console.WriteLine("Description: " + githubApiClient.GetRepositoryDescription());
+            Console.WriteLine("Creation date: " + githubApiClient.GetRepositoryCreationDate());
+            Console.WriteLine("Main language: " + githubApiClient.GetRepositoryMainLanguage());
+            Console.WriteLine("URL: " + githubApiClient.GetRepositoryUrl());
+            Console.WriteLine("\n=======================================================================\n");
         }
 
         private static bool InsertMessageToDatabase(string id, string message)

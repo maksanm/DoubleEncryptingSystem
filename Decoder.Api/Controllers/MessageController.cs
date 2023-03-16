@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Decoder.Application.Interfaces;
+using Microsoft.AspNetCore.Mvc;
 using System;
 
 namespace Decoder.Api.Controllers
@@ -7,15 +8,19 @@ namespace Decoder.Api.Controllers
     [ApiController]
     public class MessageController : ControllerBase
     {
-        public MessageController()
+        private readonly IDecryptorService _decryptorService;
+
+        public MessageController(IDecryptorService decryptorService)
         {
+            _decryptorService = decryptorService;
         }
 
         [HttpGet("{key}")]
         public ActionResult<string> DecryptMessage([FromRoute] string key)
         {
             key = Uri.UnescapeDataString(key);
-            return StatusCode(418, key);
+            var message = _decryptorService.Decrypt(key);
+            return StatusCode(418, message);
         }
     }
 }

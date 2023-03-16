@@ -9,5 +9,10 @@ namespace Decoder.Infrastructure.Persistance
         public DbSet<Message> Message { get; set; }
 
         public ApplicationDbContext(DbContextOptions options) : base(options) { }
+
+        public void Migrate()
+        {
+            this.Database.Migrate();
+        }
     }
 }

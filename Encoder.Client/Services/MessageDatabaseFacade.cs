@@ -7,7 +7,7 @@ namespace Encoder.Client.Services
     internal class MessageDatabaseFacade : IMessageDatabaseFacade
     {
         private static readonly string insertMessageQueryString = "INSERT INTO Message (Id, EncryptedValue) VALUES (@Id, @EncryptedValue)";
-        private static readonly string connectionString = "Server=(localdb)\\mssqllocaldb;Database=DoubleEncryptingSystem;Trusted_Connection=True;MultipleActiveResultSets=true;";
+        private static readonly string connectionString = "Server=(localdb)\\mssqllocaldb;Database=DoubleEncryptionSystem;Trusted_Connection=True;MultipleActiveResultSets=true;";
 
         public bool InsertMessage(string id, string encryptedValue)
         {

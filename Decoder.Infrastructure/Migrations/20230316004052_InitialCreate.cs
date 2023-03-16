@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace Decoder.Infrastructure.Migrations
+namespace Decryptor.Infrastructure.Migrations
 {
     public partial class InitialCreate : Migration
     {

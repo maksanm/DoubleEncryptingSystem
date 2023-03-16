@@ -7,6 +7,8 @@ using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Polly;
+using System.Net.Http;
 
 namespace Encoder.Client
 {
@@ -14,41 +16,37 @@ namespace Encoder.Client
     {
         static async Task Main(string[] args)
         {
-            while(true)
+            IApiClient apiClient = new ApiClient();
+            IEncryptor aesEncryptor = new AESEncryptor();
+            IEncryptor rsaEncryptor = new RSAEncryptor();
+
+            var rsaPublicKey = await apiClient.GetPublicRSAKey();
+            Console.WriteLine("\nRSA public key fetched from the server: " + rsaPublicKey);
+            Console.WriteLine("\n=======================================================================\n");
+
+            while (true)
             {
-                Console.WriteLine("=================================================================\n");
-
-                IApiClient apiClient = new ApiClient();
-                IEncryptor aesEncryptor = new AESEncryptor();
-                IEncryptor rsaEncryptor = new RSAEncryptor();
-
                 var message = GenerateString(16);
                 var password = GenerateString();
-                var encryptedMessage = aesEncryptor.Encrypt(message, password);
+                var aesEncryptedMessage = aesEncryptor.Encrypt(message, password);
                 Console.WriteLine("Generated message: " + message);
-                Console.WriteLine("With password: " + password + "\n");
-                Console.WriteLine("AES-encrypted message: " + encryptedMessage);
+                Console.WriteLine("With password (AES-key): " + password);
+                Console.WriteLine("\nAES-encrypted message: " + aesEncryptedMessage);
 
                 var id = Guid.NewGuid();                
-                if (!InsertMessageToDatabase(id.ToString(), encryptedMessage))
+                if (!InsertMessageToDatabase(id.ToString(), aesEncryptedMessage))
                     break;
                 Console.WriteLine("Generated message ID: " + id.ToString());
 
-                var rsaPublicKey = await apiClient.GetPublicRSAKey();
-                Console.WriteLine("RSA public key fetched from server: " + rsaPublicKey);
-                var encryptedIdWithAESKey = rsaEncryptor.Encrypt(id.ToString() + "$" + encryptedMessage, rsaPublicKey);
-                Console.WriteLine("RSA-encrypted ID with AES-key: " + encryptedIdWithAESKey + "\n");
+                var encryptedIdWithAESKey = rsaEncryptor.Encrypt(id.ToString() + "$" + password, rsaPublicKey);
+                Console.WriteLine("\nRSA-encrypted ID with AES-key: " + encryptedIdWithAESKey);
 
                 var decryptedMessage = await apiClient.GetDecryptedMessage(encryptedIdWithAESKey);
-                Console.WriteLine("Decrypted message: " + decryptedMessage + "\n");
+                Console.WriteLine("\nDecrypted message fetched from the server: " + decryptedMessage);
+                Console.WriteLine("\n=======================================================================\n");
 
                 Thread.Sleep(15000);
             }
-        }
-
-        private static string GenerateMessage()
-        {
-            return "Best test message ever";
         }
 
         private static bool InsertMessageToDatabase(string id, string message)
@@ -60,7 +58,7 @@ namespace Encoder.Client
 
         private static Random random = new Random();
 
-        public static string GenerateString(int length = 8)
+        private static string GenerateString(int length = 8)
         {
             const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
             return new string(Enumerable

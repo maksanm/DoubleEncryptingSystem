@@ -19,7 +19,9 @@ namespace Decoder.Infrastructure.Services
 
         public string Decrypt(string encryptedMessage)
         {
-            var messageId = _rsaDecryptor.Decrypt(encryptedMessage);
+            var messageIdAndAESKey = _rsaDecryptor.Decrypt(encryptedMessage).Split("$");
+            var messageId = messageIdAndAESKey[0];
+            var aesKey = messageIdAndAESKey[1];
             var message = _context.Message.Find(messageId);
             if (message is null)
                 throw new ApplicationException("Message with provided id does not exist");

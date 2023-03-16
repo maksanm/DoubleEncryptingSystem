@@ -1,4 +1,5 @@
 ﻿using Decryptor.Infrastructure.Interfaces;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.IO;
 using System.Security.Cryptography;
@@ -8,7 +9,12 @@ namespace Decryptor.Infrastructure.Services.Decryptors
 {
     internal class AESDecryptor : ISymmetricDecryptor
     {
-        private readonly string _passwordSalt = "super_hard_salt";
+        private readonly string _passwordSalt;
+
+        public AESDecryptor(IConfiguration config)
+        {
+            _passwordSalt = config["AES:KeySalt"];
+        }
 
         public string Decrypt(string encryptedText, string password, string IV)
         {

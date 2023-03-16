@@ -1,18 +1,24 @@
 ﻿using Encoder.Client.Interfaces;
 using System;
+using System.Configuration;
 using System.Data.SqlClient;
 
 namespace Encoder.Client.Services
 {
     internal class MessageDatabaseFacade : IMessageDatabaseFacade
     {
-        private static readonly string insertMessageQueryString = "INSERT INTO Message (Id, EncryptedValue) VALUES (@Id, @EncryptedValue)";
-        private static readonly string connectionString = "Server=(localdb)\\mssqllocaldb;Database=DoubleEncryptionSystem;Trusted_Connection=True;MultipleActiveResultSets=true;";
+        private static readonly string _insertMessageQueryString = "INSERT INTO Message (Id, EncryptedValue) VALUES (@Id, @EncryptedValue)";
+        private readonly string _connectionString;
+
+        public MessageDatabaseFacade()
+        {
+            _connectionString = ConfigurationManager.ConnectionStrings["default"].ConnectionString;
+        }
 
         public bool InsertMessage(string id, string encryptedValue)
         {
-            using SqlConnection connection = new SqlConnection(connectionString);
-            SqlCommand command = new SqlCommand(insertMessageQueryString, connection);
+            using SqlConnection connection = new SqlConnection(_connectionString);
+            SqlCommand command = new SqlCommand(_insertMessageQueryString, connection);
             command.Parameters.AddWithValue("@Id", id);
             command.Parameters.AddWithValue("@EncryptedValue", encryptedValue);
             connection.Open();

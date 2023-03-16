@@ -1,5 +1,6 @@
 ﻿using Encryptor.Client.Interfaces.Encryptors;
 using System;
+using System.Configuration;
 using System.IO;
 using System.Security.Cryptography;
 using System.Text;
@@ -8,7 +9,12 @@ namespace Encryptor.Client.Services.Encryptors
 {
     internal class AESEncryptor : ISymmetricEncryptor
     {
-        private readonly string _passwordSalt = "super_hard_salt";
+        private readonly string _passwordSalt;
+
+        public AESEncryptor()
+        {
+            _passwordSalt = ConfigurationManager.AppSettings["aesKeySalt"];
+        }
 
         public (string encryptedText, string IV) Encrypt(string plainText, string password)
         {

@@ -3,6 +3,7 @@ using Polly;
 using Polly.Retry;
 using RestSharp;
 using System;
+using System.Configuration;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web;
@@ -14,9 +15,9 @@ namespace Encryptor.Client.Services
         private readonly string _apiUrl;
         private readonly IRestClient _restClient;
 
-        public ApiClient(string apiUrl = "https://localhost:5001")
+        public ApiClient()
         {
-            _apiUrl = apiUrl;
+            _apiUrl = ConfigurationManager.AppSettings["apiUrl"];
             _restClient = new RestClient(_apiUrl);
         }
 

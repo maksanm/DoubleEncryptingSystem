@@ -23,6 +23,7 @@ namespace Decoder.Api
         {
             services.AddControllers()
                 .AddXmlSerializerFormatters();
+            services.AddSingleton(_ => Configuration);
 
             services.AddInfrastructure(Configuration);
 

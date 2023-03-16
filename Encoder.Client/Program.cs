@@ -9,6 +9,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Encryptor.Client.Interfaces.Encryptors;
 using System.Configuration;
+using Encryptor.Client.Services.ApiClients;
 
 namespace Encoder.Client
 {
@@ -16,13 +17,13 @@ namespace Encoder.Client
     {
         static async Task Main(string[] args)
         {
-            IApiClient apiClient = new ApiClient();
+            var decryptorApiClient = new DecryptorApiClient(ConfigurationManager.AppSettings["decryptorApiUrl"]);
             ISymmetricEncryptor aesEncryptor = new AESEncryptor();
             IAsymmetricEncryptor rsaEncryptor = new RSAEncryptor();
             var messageLength = Convert.ToInt32(ConfigurationManager.AppSettings["messageLength"]);
             var passwordLength = Convert.ToInt32(ConfigurationManager.AppSettings["passwordLength"]);
 
-            var rsaPublicKey = await apiClient.GetPublicRSAKey();
+            var rsaPublicKey = await decryptorApiClient.GetPublicRSAKey();
             Console.WriteLine("\nRSA public key fetched from the server: " + rsaPublicKey);
             Console.WriteLine("\n=======================================================================\n");
 
@@ -44,7 +45,7 @@ namespace Encoder.Client
                 var rsaEncryptedIdWithAesKeys = rsaEncryptor.Encrypt(id.ToString() + "$" + password + "$" + aesIV, rsaPublicKey);
                 Console.WriteLine("\nRSA-encrypted ID with AES key and AES initialization vector:\n" + rsaEncryptedIdWithAesKeys);
 
-                var decryptedMessage = await apiClient.GetDecryptedMessage(rsaEncryptedIdWithAesKeys);
+                var decryptedMessage = await decryptorApiClient.GetDecryptedMessage(rsaEncryptedIdWithAesKeys);
                 Console.WriteLine("\nDecrypted message fetched from the server: " + decryptedMessage);
                 Console.WriteLine("\n=======================================================================\n");
 

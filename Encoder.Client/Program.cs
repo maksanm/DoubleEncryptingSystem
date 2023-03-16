@@ -9,6 +9,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Polly;
 using System.Net.Http;
+using Encryptor.Client.Interfaces.Encryptors;
 
 namespace Encoder.Client
 {
@@ -17,8 +18,8 @@ namespace Encoder.Client
         static async Task Main(string[] args)
         {
             IApiClient apiClient = new ApiClient();
-            IEncryptor aesEncryptor = new AESEncryptor();
-            IEncryptor rsaEncryptor = new RSAEncryptor();
+            ISymmetricEncryptor aesEncryptor = new AESEncryptor();
+            IAsymmetricEncryptor rsaEncryptor = new RSAEncryptor();
 
             var rsaPublicKey = await apiClient.GetPublicRSAKey();
             Console.WriteLine("\nRSA public key fetched from the server: " + rsaPublicKey);
@@ -26,9 +27,9 @@ namespace Encoder.Client
 
             while (true)
             {
-                var message = GenerateString(16);
+                var message = GenerateString(25);
                 var password = GenerateString();
-                var aesEncryptedMessage = aesEncryptor.Encrypt(message, password);
+                (var aesEncryptedMessage, var aesIV) = aesEncryptor.Encrypt(message, password);
                 Console.WriteLine("Generated message: " + message);
                 Console.WriteLine("With password (AES-key): " + password);
                 Console.WriteLine("\nAES-encrypted message: " + aesEncryptedMessage);
@@ -38,10 +39,10 @@ namespace Encoder.Client
                     break;
                 Console.WriteLine("Generated message ID: " + id.ToString());
 
-                var encryptedIdWithAESKey = rsaEncryptor.Encrypt(id.ToString() + "$" + password, rsaPublicKey);
-                Console.WriteLine("\nRSA-encrypted ID with AES-key: " + encryptedIdWithAESKey);
+                var rsaEncryptedIdWithAesKeys = rsaEncryptor.Encrypt(id.ToString() + "$" + password + "$" + aesIV, rsaPublicKey);
+                Console.WriteLine("\nRSA-encrypted ID with AES-key: " + rsaEncryptedIdWithAesKeys);
 
-                var decryptedMessage = await apiClient.GetDecryptedMessage(encryptedIdWithAESKey);
+                var decryptedMessage = await apiClient.GetDecryptedMessage(rsaEncryptedIdWithAesKeys);
                 Console.WriteLine("\nDecrypted message fetched from the server: " + decryptedMessage);
                 Console.WriteLine("\n=======================================================================\n");
 

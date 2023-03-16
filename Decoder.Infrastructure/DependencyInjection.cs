@@ -43,6 +43,7 @@ namespace Decoder.Infrastructure
         private static IServiceCollection AddDecryptors(this IServiceCollection services)
         {
             services.AddSingleton<IAsymmetricDecryptor, RSADecryptor>();
+            services.AddSingleton<ISymmetricDecryptor, AESDecryptor>();
 
             return services;
         }

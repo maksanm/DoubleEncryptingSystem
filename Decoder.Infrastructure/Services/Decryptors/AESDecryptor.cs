@@ -1,28 +1,30 @@
-﻿using Encryptor.Client.Interfaces.Encryptors;
+﻿using Decryptor.Infrastructure.Interfaces;
 using System;
 using System.IO;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace Encryptor.Client.Services.Encryptors
+namespace Decryptor.Infrastructure.Services.Decryptors
 {
-    internal class AESEncryptor : ISymmetricEncryptor
+    internal class AESDecryptor : ISymmetricDecryptor
     {
         private readonly string _passwordSalt = "super_hard_salt";
 
-        public (string encryptedText, string IV) Encrypt(string plainText, string password)
+        public string Decrypt(string encryptedText, string password, string IV)
         {
             using var aes = Aes.Create();
             aes.Key = DeriveKeyFromPassword(password);
+            aes.IV = Convert.FromBase64String(IV);
 
-            using MemoryStream encryptedStream = new();
-            using CryptoStream cryptoStream = new(encryptedStream, aes.CreateEncryptor(), CryptoStreamMode.Write);
-            cryptoStream.Write(Encoding.Unicode.GetBytes(plainText));
-            cryptoStream.FlushFinalBlock();
+            var encryptedBytes = Convert.FromBase64String(encryptedText);
+            using MemoryStream encryptedStream = new(encryptedBytes);
+            using CryptoStream cryptoStream = new(encryptedStream, aes.CreateDecryptor(), CryptoStreamMode.Read);
 
-            var encryptedBase64String = Convert.ToBase64String(encryptedStream.ToArray());
-            var IVBase64String = Convert.ToBase64String(aes.IV);
-            return (encryptedBase64String, IVBase64String);
+            using MemoryStream decodedStream = new();
+            cryptoStream.CopyTo(decodedStream);
+
+            var decryptedText = Encoding.Unicode.GetString(decodedStream.ToArray());
+            return decryptedText;
         }
 
         private byte[] DeriveKeyFromPassword(string password)

@@ -1,4 +1,4 @@
-# Double encrypting client-server application
+# Double encryption client-server application
 Solution prepared as a part of recruitment process. The task was to create the client (console app) writing encrypted message to database using `SQL`-query and the server using `Entity Framework` with endpoint returning decrypted message by key. I've used `AES` encryption during saving message to database and `RSA` to encrypt message id, password (which is used for `AES` key derivation with salt) and `AES` initialization vetor to be processed by the server.
 
 ## Used libraries (beyond the obvious, e.g. `EF Core`):

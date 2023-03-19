@@ -17,7 +17,7 @@ namespace Decoder.Api.Controllers
         [HttpGet("public")]
         public ActionResult<string> GetRSAPublicKey()
         {
-            return Ok(_decryptorService.RSAPublicKey);
+            return Ok(_decryptorService.AsymmetricDecryptorPublicKey);
         }
     }
 }

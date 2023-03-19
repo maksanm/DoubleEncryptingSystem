@@ -22,7 +22,7 @@ namespace Decoder.Infrastructure
         private static IServiceCollection AddApplicationServices(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddDatabaseContext(configuration);
-            services.AddTransient<IDecryptorService, DecryptorService>();
+            services.AddTransient<IDecryptorService, DoubleDecryptorService>();
 
             return services;
         }

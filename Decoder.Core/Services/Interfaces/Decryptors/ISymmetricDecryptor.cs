@@ -2,6 +2,6 @@
 {
     public interface ISymmetricDecryptor : IDecryptor
     {
-        string Decrypt(string encryptedText, string key, string IV);
+        string Decrypt(string encryptedText, string password, string IV);
     }
 }

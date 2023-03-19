@@ -1,10 +1,10 @@
-﻿using Decoder.Application.Interfaces;
-using Decryptor.Infrastructure.Interfaces;
+﻿using Decryptor.Core.Services.Interfaces;
+using Decryptor.Core.Services.Interfaces.Decryptors;
 using System;
 
-namespace Decoder.Infrastructure.Services
+namespace Decryptor.Core.Services
 {
-    internal class DecryptorService : IDecryptorService
+    public class DecryptorService : IDecryptorService
     {
         private readonly IApplicationDbContext _context;
         private readonly IAsymmetricDecryptor _rsaDecryptor;

@@ -1,5 +1,5 @@
-﻿using Decoder.Application.Interfaces;
-using Decoder.Core.Entities;
+﻿using Decoder.Core.Entities;
+using Decryptor.Core.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 namespace Decoder.Infrastructure.Persistance

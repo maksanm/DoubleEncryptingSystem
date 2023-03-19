@@ -1,7 +1,7 @@
 ﻿using Decoder.Core.Entities;
 using Microsoft.EntityFrameworkCore;
 
-namespace Decoder.Application.Interfaces
+namespace Decryptor.Core.Services.Interfaces
 {
     public interface IApplicationDbContext
     {

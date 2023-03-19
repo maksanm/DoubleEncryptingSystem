@@ -1,4 +1,4 @@
-using Decoder.Application.Interfaces;
+using Decryptor.Core.Services.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;

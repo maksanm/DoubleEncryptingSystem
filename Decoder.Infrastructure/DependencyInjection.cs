@@ -1,7 +1,7 @@
-﻿using Decoder.Application.Interfaces;
-using Decoder.Infrastructure.Persistance;
-using Decoder.Infrastructure.Services;
-using Decryptor.Infrastructure.Interfaces;
+﻿using Decoder.Infrastructure.Persistance;
+using Decryptor.Core.Services;
+using Decryptor.Core.Services.Interfaces;
+using Decryptor.Core.Services.Interfaces.Decryptors;
 using Decryptor.Infrastructure.Services.Decryptors;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;

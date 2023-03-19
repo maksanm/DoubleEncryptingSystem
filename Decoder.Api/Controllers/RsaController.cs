@@ -1,4 +1,4 @@
-﻿using Decoder.Application.Interfaces;
+﻿using Decryptor.Core.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Decoder.Api.Controllers

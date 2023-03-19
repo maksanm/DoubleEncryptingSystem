@@ -1,4 +1,4 @@
-﻿using Decryptor.Infrastructure.Interfaces;
+﻿using Decryptor.Core.Services.Interfaces.Decryptors;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.IO;

@@ -1,4 +1,4 @@
-﻿namespace Decoder.Application.Interfaces
+﻿namespace Decryptor.Core.Services.Interfaces
 {
     public interface IDecryptorService
     {

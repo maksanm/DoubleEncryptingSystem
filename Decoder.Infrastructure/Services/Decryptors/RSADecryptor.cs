@@ -1,4 +1,4 @@
-﻿using Decryptor.Infrastructure.Interfaces;
+﻿using Decryptor.Core.Services.Interfaces.Decryptors;
 using System;
 using System.Security.Cryptography;
 using System.Text;
